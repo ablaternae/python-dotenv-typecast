@@ -26,12 +26,13 @@ The following are all type-casting methods of `DotEnv`:
 """
 
 import sys
+import urllib
 from typing import Any
 
 from dotenv import *
 from dotenv.main import *
 
-__version__ = "0.1.3b29"
+__version__ = "0.1.3b31"
 __vendor__ = "onefile.typecast.dotenv.python"
 
 
