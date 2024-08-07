@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling","setuptools","build","wheel"]
+build-backend = "hatchling.build"
+
+[project]
+name="python-dotenv-typecast"
+description = "Typecast plugin for `python-dotenv` library"
+dynamic = ["version"]
+readme = "README.en.md"
+license = "BSD-3-Clause"
+license-files = { globs = ["LICENSES/*"] }
+keywords = ["dotenv","dotenv plugin","typecast"]
+authors = [
+  { name = "d;)", email = "adlaternae@github.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+  "Topic :: System :: Systems Administration",
+  "Topic :: Utilities",
+  "Environment :: Web Environment",
+]
+requires-python = ">=3.8"
+dependencies = ["python-dotenv"]
+
+[project.urls]
+#Changelog = "https://github.com/ablaternae/python-dotenv-typecast/blob/master/CHANGELOG.md"
+#Documentation = "https://readthedocs.org"
+#Homepage = "https://github.com/ablaternae/python-dotenv-typecast"
+#Issues = "https://github.com/ablaternae/python-dotenv-typecast"
+Repository = "https://github.com/ablaternae/python-dotenv-typecast"
+#Source = "https://github.com/ablaternae/python-dotenv-typecast"
+#Wiki = "https://github.com/ablaternae/python-dotenv-typecast/wiki"
+
+[tool.hatch.version]
+path = "dotenv_typecast.py"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.metadata]
+# https://peps.python.org/pep-0440/#direct-references
+allow-direct-references = true
+
+[tool.hatch.envs.static]
+dev-mode = true
+
+[tool.hatch.build]
+ignore-vcs = true
+skip-excluded-dirs = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["dotenv_typecast.py"]
+include = ["requirements.txt","!.env"]
+#artifacts = ["LICENSE*","MANIFEST*","README*","requirements.txt","!.env"]
+#[tool.hatch.build.targets.wheel.sources]
+#"" = "src"

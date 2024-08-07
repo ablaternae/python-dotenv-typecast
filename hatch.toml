@@ -1,0 +1,54 @@
+
+mode = "local"
+project = "dotenv-typecast"
+
+[shell]
+name = "bash"
+
+[dirs]
+data = ".hatch"
+cache = ".hatch/cache"
+python = ".venv/Scripts"
+
+[envs.default]
+type = "virtual"
+
+description = "default env description"
+detached = true
+dev-mode = true
+skip-install = false
+
+[envs.default.env-vars]
+HATCH_CONFIG = "./hatch.toml"
+HATCH_ENV_TYPE_VIRTUAL_PATH = ".venv"
+PIPENV_VENV_IN_PROJECT = "1"
+PIPENV_IGNORE_VIRTUALENVS = "1"	# to force pipenv to create its own virtualenv
+PIP_IGNORE_INSTALLED = "1" # pipenv ignore global installed
+
+[envs.default.scripts]
+install = "pipenv install {args} & hatch run req-env"
+add = "pipenv install {args} & hatch run req-env"
+uninstall = "pipenv uninstall {args} & hatch run req-env"
+remove = "pipenv uninstall {args} & hatch run req-env"
+
+req = "pipenv -q requirements > requirements.txt && echo Ok"
+req-dev = "pipenv -q requirements --dev > requirements-dev.txt && echo Ok"
+req-env = "pipenv -q requirements {args} > requirements-{env_name}.txt && echo Ok"
+
+sync = "pipenv --quiet update && hatch run req-env"
+resync = "pip freeze > tmp.txt && pip uninstall -q -y -r tmp.txt & rm tmp.txt && pipenv -q install --dev && hatch run req-env"
+renew = "rm -i Pipfile.lock & hatch run resync"
+#renew = "rm -i Pipfile.lock & pipenv -q install --dev && hatch run req-env"
+
+a = "git commit -am \"{args}\""
+b = "hatch -v build -t wheel:standard"
+v = "hatch version beta && isort --honor-noqa --star-first ./src && black ./src"
+
+[terminal.styles]
+info = "bold"
+success = "bold cyan"
+error = "bold red"
+warning = "bold yellow"
+waiting = "bold magenta"
+debug = "bold"
+spinner = "simpleDotsScrolling"

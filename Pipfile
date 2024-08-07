@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = false
+
+[dev-packages]
+black = "*"
+build = "*"
+cython = "*"
+hatchling = "*"
+isort = "*"
+setuptools = "*"
+trove-classifiers = "*"
+wheel = "*"
+dotenv-typecast = {file = ".", editable = true}
+
+[packages]
+python-dotenv = "*"
+
+[requires]
+
+[scripts]
