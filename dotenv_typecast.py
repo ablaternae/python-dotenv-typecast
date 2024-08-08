@@ -25,14 +25,15 @@ The following are all type-casting methods of `DotEnv`:
 
 """
 
+import os
 import sys
 import urllib
-from typing import Any
+from typing import IO, Any, Optional, Union
 
 from dotenv import *
 from dotenv.main import *
 
-__version__ = "0.1.3b31"
+__version__ = "0.1.4b33"
 __vendor__ = "onefile.typecast.dotenv.python"
 
 
@@ -76,6 +77,21 @@ def read_dotenv(
         override=override,
         encoding=encoding,
     )
+
+
+def from_string(text=Union[str, list, dict]) -> io.StringIO:
+    if isinstance(text, dict):
+        text = "\n".join(text.values())
+    if isinstance(text, list):
+        text = "\n".join(text)
+    if not isinstance(text, str):
+        raise ValueError("incorrect `text` type")
+
+    return io.StringIO(text)
+
+
+def from_string_values(text=Union[str, list, dict]) -> dict:
+    return dotenv_values(stream=from_string(text))
 
 
 def _cast(
