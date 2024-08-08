@@ -61,10 +61,10 @@ data_dir = env.path("DATA_DIR", default="my_data_dir")
 runs  via `DotEnv.__getattr__`
 
 ```python
-def method(envvar_name: str, type_cast: str = None, default_value = None, *args, **kwargs) -> Any
+def typecast_method(env_name: str, default_value = None, *args, **kwargs) -> Any
 ```
 
-#### supported types (methods)
+#### supported types
 The following are all type-casting methods of `DotEnv`:
 
 - `env.str`
@@ -86,5 +86,5 @@ The following are all type-casting methods of `DotEnv`:
 #### not implemented
 - `env.dict` (not implemented yet; accepts optional `subcast_keys`, `subcast_values` and `delimiter` keyword arguments)
 - `env.enum` (not implemented yet; casts to any given enum type specified in `type` keyword argument, accepts optional `ignore_case` keyword argument)
-- `env.log_level` (will not be implemented, use string)
+- `env.log_level` (will not be implemented)
 
