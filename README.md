@@ -33,7 +33,7 @@ from dotenv import dotenv_values, load_dotenv, read_dotenv
 from dotenv_typecast import dotenv_values, load_dotenv, read_dotenv
 ```
 
-В модуль `dotenv` будет добавлена функция `read_dotenv`, которая работает аналогично другим функциям, но __возвращает объект__ `DotEnv`
+После инициализации к модулю `dotenv` будет добавлена функция `read_dotenv`, которая работает аналогично другим функциям, но __возвращает объект__ `DotEnv`
 ```python
 def read_dotenv(
     dotenv_path: Optional[StrPath] = None,
@@ -54,7 +54,7 @@ data_dir = env.path("DATA_DIR", default="my_data_dir")
 ## Методы приведения типов
 имеют схожую сигнатуру и обрабатываются через `DotEnv.__getattr__`
 ```python
-def str(envvar_name, type_cast=None, default_value=None, *args, **kwargs) -> Any
+def typecast_method(env_name: str, default_value = None, *args, **kwargs) -> Any
 ```
 список методов, в целом, аналогичен `environs`:
 - `env.str`
