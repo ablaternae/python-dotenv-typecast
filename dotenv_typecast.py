@@ -33,8 +33,8 @@ from typing import IO, Any, Optional, Union
 from dotenv import *
 from dotenv.main import *
 
-__version__ = "0.1.4b33"
-__vendor__ = "onefile.typecast.dotenv.python"
+__version__ = "0.1.4b38"
+__vendor__ = "python.dotenv.typecast.onefile"
 
 
 def read_dotenv(
@@ -164,7 +164,9 @@ def _cast(
             raise TypeError(f"Typecast `{typecast}` error! " + str(exc))
 
     elif typecast in globals_builtins:
-        return globals_builtins[typecast].__call__(value)
+        return globals_builtins[typecast].__call__(
+            value or (0 if "int" == typecast else "")
+        )
     else:
         raise TypeError()
 
