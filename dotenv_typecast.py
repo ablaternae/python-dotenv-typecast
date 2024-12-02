@@ -33,7 +33,7 @@ from typing import IO, Any, Optional, Union
 from dotenv import *
 from dotenv.main import *
 
-__version__ = "0.1.4b38"
+__version__ = "0.1.5"
 __vendor__ = "python.dotenv.typecast.onefile"
 
 
@@ -69,7 +69,7 @@ def read_dotenv(
     if dotenv_path is None and stream is None:
         dotenv_path = find_dotenv()
 
-    return DotEnv(
+    dotenv = DotEnv(
         dotenv_path=dotenv_path,
         stream=stream,
         verbose=verbose,
@@ -77,6 +77,8 @@ def read_dotenv(
         override=override,
         encoding=encoding,
     )
+    dotenv.set_as_environment_variables()
+    return dotenv
 
 
 def from_string(text=Union[str, list, dict]) -> io.StringIO:
@@ -92,6 +94,10 @@ def from_string(text=Union[str, list, dict]) -> io.StringIO:
 
 def from_string_values(text=Union[str, list, dict]) -> dict:
     return dotenv_values(stream=from_string(text))
+
+
+def getenv(key: str, default: Any = None) -> Any:
+    return os.getenv(key, default)
 
 
 def _cast(
@@ -117,7 +123,7 @@ def _cast(
     globals_builtins = globals()["__builtins__"]
 
     if "bool" == typecast:
-        return False if val_lo in ("", "0", "false", "no", "none") else True
+        return False if val_lo in ("", "0", "false", "no", "none", False) else True
     elif "path" == typecast:
         return pathlib.Path(value)
     elif "timedelta" == typecast:
@@ -171,6 +177,10 @@ def _cast(
         raise TypeError()
 
 
+def _env(self, key: str, default: Any = None) -> Any:
+    return os.getenv(key, default)
+
+
 def _getattr(self, name: str) -> Any:
     return lambda key, default=None, *args, **kwargs: self.cast(
         value=(self.get(key) or default), typecast=name, *args, **kwargs
@@ -179,8 +189,10 @@ def _getattr(self, name: str) -> Any:
 
 
 sys.modules["dotenv"].main.DotEnv.cast = _cast
+sys.modules["dotenv"].main.DotEnv.env = sys.modules["dotenv"].main.DotEnv.getenv = _env
 sys.modules["dotenv"].main.DotEnv.__getattr__ = _getattr
 sys.modules["dotenv"].read_dotenv = read_dotenv
 sys.modules["dotenv"].__all__.append("read_dotenv")
+sys.modules["dotenv"].__all__.append("getenv")
 
 __all__ = [*sys.modules["dotenv"].__all__, "DotEnv"]
