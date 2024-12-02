@@ -21,7 +21,7 @@ my_string = env.str("ENV_STR")
 
 ## how it work
 
-This plugin extends the [`dotenv`](https://github.com/theskumar/python-dotenv) library with methods `read_dotenv()`, `DotEnv.cast()`, `DotEnv.__getattr__()`. 
+This plugin extends the [`dotenv`](https://github.com/theskumar/python-dotenv) library with methods `read_dotenv()`, `DotEnv.cast()`, `DotEnv.getenv()`, `DotEnv.__getattr__()`. 
 It works almost like [`environs`](https://github.com/sloria/environs) but without `marshmallow`'s 350kb and valitadion, type cast only.
 
 ### plugin initialization
@@ -56,6 +56,13 @@ env = read_dotenv(".env", override=True)
 
 data_dir = env.path("DATA_DIR", default="my_data_dir")
 ```
+
+## Update
+#### 24-12-01
+- added method `DotEvn.env(key, default)` (syn `DotEvn.getenv()`) for getting data from environment variables, like a `os.getenv(key, default)`, not from private attribute like origin `DotEvn.get()`
+- all type-cast processing goes via its new method 
+- so using the parameter `override` seems more logical
+- version growed to stable, plugin is ready to production
 
 ### type-cast methods
 runs  via `DotEnv.__getattr__`
