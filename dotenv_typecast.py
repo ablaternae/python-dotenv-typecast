@@ -33,8 +33,8 @@ from typing import IO, Any, Optional, Union
 from dotenv import *
 from dotenv.main import *
 
-__version__ = "0.1.5"
-__vendor__ = "python.dotenv.typecast.onefile"
+__version__ = "0.1.6"
+__vendor__ = "python.dotenv.typecast"
 
 
 def read_dotenv(
@@ -119,11 +119,17 @@ def _cast(
         raise NotImplementedError("Not implemented yet")
 
     typecast = typecast.lower()
-    val_lo = str(value).lower()
     globals_builtins = globals()["__builtins__"]
 
-    if "bool" == typecast:
-        return False if val_lo in ("", "0", "false", "no", "none", False) else True
+    if "none" == typecast:
+        # fake cast
+        return None
+    elif "bool" == typecast:
+        return (
+            False
+            if (str(value).lower() in ("", "0", "false", "n", "no", "non", "none"))
+            else True
+        )
     elif "path" == typecast:
         return pathlib.Path(value)
     elif "timedelta" == typecast:
@@ -183,7 +189,7 @@ def _env(self, key: str, default: Any = None) -> Any:
 
 def _getattr(self, name: str) -> Any:
     return lambda key, default=None, *args, **kwargs: self.cast(
-        value=(self.get(key) or default), typecast=name, *args, **kwargs
+        value=(self.env(key) or default), typecast=name, *args, **kwargs
     )
     # правильно доработать метод до привычной сигнатуры DotEnv::get(key, default=None)
 
